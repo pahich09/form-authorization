@@ -1,0 +1,32 @@
+.main-header{
+    background-color: bisque;
+}
+#exampleInputEmail1,
+#exampleInputPassword1{
+    background-image: none;
+}
+.password-wrap{
+    position: relative;
+}
+.password-wrap .btn-eye{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    padding-right: 10px;
+     background: none;
+    border: none;
+    outline: none;
+}
+.wrap-is-invalid~.invalid-feedback,
+.wrap-is-valid~.valid-feedback{
+    display: block;
+}
+.alert{
+    margin-top: 15px;
+}
+
+
+.hide{
+    display: none;
+}
