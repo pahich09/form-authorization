@@ -9,24 +9,17 @@ const authData = [
     { name: 'Pavel', email: 'grebeniuk.p@gmail.com', password: '0000000' }
 ];
 
-const createHTMLNode = (tag, attrs, inner) => {
-    const element = document.createElement(tag);
-    attrs.map(attr => { element.setAttribute(attr.name, attr.value.join(' ')) });
-    inner ? element.innerHTML = inner : null;
-    return element;
-}
 const isEmailValid = email => email.trim().split('').filter(el => el === '@').length !== 1;
 const isPasswordValid = password => password.trim().length < 7;
-const checkAuth = (eventTarget, typeAuth) => authData.find(el => el[typeAuth] === eventTarget.value.split(' ').join(''));
-// const attemptUserLogin = ({email, password}) => {
-//     return authData.filter(userInDB => (userInDB.email === email && userInDB.password === password?true:false).length)
-// }
+const attemptUserLogin = ({ email, password }) => {
+    return (authData.filter(userInDB => (userInDB.email === email && userInDB.password === password ? true : false))).length
+}
 const resetForm = () => {
     event.target[0].value = '';
     event.target[0].classList.remove('is-valid');
     event.target[1].value = '';
     event.target[1].classList.remove('is-valid');
-    message.innerHTML = '';
+    message.classList.add('hide');
 }
 const showContent = () => {
     loginForm.classList.add('hide');
@@ -61,17 +54,16 @@ exampleInputPassword1.addEventListener('input', event => {
 })
 loginForm.addEventListener('submit', event => {
     event.preventDefault();
-    message.innerHTML = '';
-    if (checkAuth(event.target[0], 'email') && checkAuth(event.target[1], 'password')) {
+
+    if (attemptUserLogin({ email: event.target[0].value, password: event.target[1].value })) {
         alertSuccess.classList.remove('hide');
         alertSuccess.innerHTML = `Hello, ${event.target[0].value}`;
         showContent();
         localStorage.setItem('auth', true);
         resetForm();
-
-    } else if (checkAuth(event.target[0], 'email')) {
-        message.append(createHTMLNode('div', [{ name: 'class', value: ['alert', 'alert-warning'] }], `Incorrect password`));
-    } else message.append(createHTMLNode('div', [{ name: 'class', value: ['alert', 'alert-danger'] }], `User ${event.target[0].value} not found`));
+    } else {
+        message.classList.remove('hide');
+    }
 })
 
 eye.addEventListener('click', event => {
